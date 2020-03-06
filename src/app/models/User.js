@@ -32,7 +32,9 @@ class User extends Model {
   }
 
   generateToken() {
-    return jwt.sign({ id: this.id }, authConfig.secret);
+    return jwt.sign({ id: this.id }, authConfig.secret, {
+      expiresIn: authConfig.expiresIn,
+    });
   }
 }
 
