@@ -1,6 +1,28 @@
+import Recipient from '../models/Recipient';
+
 class RecipientController {
   async store(req, res) {
-    return res.send();
+    const {
+      id,
+      name,
+      street,
+      number,
+      complement,
+      city,
+      state,
+      cep,
+    } = await Recipient.create(req.body);
+
+    return res.status(201).send({
+      id,
+      name,
+      street,
+      number,
+      complement,
+      city,
+      state,
+      cep,
+    });
   }
 }
 
