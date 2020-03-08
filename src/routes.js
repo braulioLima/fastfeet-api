@@ -35,6 +35,7 @@ routes.post(
   validatorDeliverymanStore,
   DeliverymanController.store
 );
+routes.delete('/deliveryman/:deliverymanId', DeliverymanController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
 

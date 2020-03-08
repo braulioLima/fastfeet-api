@@ -97,4 +97,31 @@ describe('Deliveryman', () => {
 
     expect(status).toBe(200);
   });
+
+  it('should be able remove deliverymans if authenticated', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    const { id } = await factory.create('deliveryman');
+
+    const { status } = await request(app)
+      .delete(`/deliveryman/${id}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(200);
+  });
+
+  it('should not be able remove if deliveryman does not exist', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    const { status, body } = await request(app)
+      .delete(`/deliveryman/${1}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(400);
+    expect(body.error).toBe('Deliveryman does not found');
+  });
 });
