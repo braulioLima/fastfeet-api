@@ -9,6 +9,7 @@ import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
 
 import validatorDeliverymanStore from './app/validators/DeliverymanStore';
+import validatorDeliverymanUpdate from './app/validators/DeliverymanUpdate';
 import validatorRecipientStore from './app/validators/RecipientStore';
 import validatorRecipientUpdate from './app/validators/RecipientUpdate';
 import validatorSessionStore from './app/validators/SessionStore';
@@ -36,6 +37,11 @@ routes.post(
   DeliverymanController.store
 );
 routes.delete('/deliveryman/:deliverymanId', DeliverymanController.delete);
+routes.put(
+  '/deliveryman/:deliverymanId',
+  validatorDeliverymanUpdate,
+  DeliverymanController.update
+);
 
 routes.post('/files', upload.single('file'), FileController.store);
 

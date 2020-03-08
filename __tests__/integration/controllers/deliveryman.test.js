@@ -124,4 +124,51 @@ describe('Deliveryman', () => {
     expect(status).toBe(400);
     expect(body.error).toBe('Deliveryman does not found');
   });
+
+  it('should be able update deliverymans if authenticated', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    const { id } = await factory.create('deliveryman');
+
+    const { status } = await request(app)
+      .put(`/deliveryman/${id}`)
+      .send({ email: 'teste@test.com' })
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(200);
+  });
+
+  it('should not be able update deliverymans with incorrect data', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    const { id } = await factory.create('deliveryman');
+
+    const { status, body } = await request(app)
+      .put(`/deliveryman/${id}`)
+      .send({ email: false })
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(400);
+    expect(body.error).toBe('Validation fails');
+  });
+
+  it('should not be able update deliverymans if not exist', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    await factory.create('deliveryman');
+
+    const { status, body } = await request(app)
+      .put(`/deliveryman/${1000}`)
+      .send({ email: 'teste@test.com' })
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(400);
+    expect(body.error).toBe('Deliveryman not found');
+  });
 });

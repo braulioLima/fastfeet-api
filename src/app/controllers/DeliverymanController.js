@@ -59,6 +59,32 @@ class DeliverymanController {
 
     return res.send();
   }
+
+  async update(req, res) {
+    const deliveryman = await Deliveryman.findByPk(req.params.deliverymanId);
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman not found' });
+    }
+
+    await deliveryman.update(req.body);
+
+    const { id, name, email, avatar } = await Deliveryman.findByPk(
+      req.params.deliverymanId,
+      {
+        attributes: ['id', 'name', 'email'],
+        include: [
+          {
+            model: File,
+            as: 'avatar',
+            attributes: ['name', 'path', 'url'],
+          },
+        ],
+      }
+    );
+
+    return res.json({ id, name, email, avatar });
+  }
 }
 
 export default new DeliverymanController();
