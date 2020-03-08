@@ -16,10 +16,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      avatar_id: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

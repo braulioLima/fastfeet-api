@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
+import File from './File';
 
 class Deliveryman extends Model {
   static init(sequelize) {
@@ -14,6 +15,10 @@ class Deliveryman extends Model {
     );
 
     return this;
+  }
+
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
   }
 }
 
