@@ -4,6 +4,7 @@ import factory from '../../factories';
 
 describe('User Model', () => {
   beforeEach(async () => {
+    jest.setTimeout(30000);
     await truncate();
   });
 

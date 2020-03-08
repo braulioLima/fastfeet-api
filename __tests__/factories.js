@@ -1,5 +1,7 @@
 import { factory } from 'factory-girl';
 import faker from 'faker';
+
+import Deliveryman from '../src/app/models/Deliveryman';
 import User from '../src/app/models/User';
 import Recipient from '../src/app/models/Recipient';
 
@@ -31,6 +33,11 @@ factory.define('recipient', Recipient, {
   city: faker.address.city(),
   state: faker.address.stateAbbr(),
   zip_code: faker.address.zipCode('########'),
+});
+
+factory.define('deliveryman', Deliveryman, {
+  name: faker.name.findName(),
+  email: faker.internet.email(),
 });
 
 export default factory;

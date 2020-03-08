@@ -1,21 +1,13 @@
-import supertest from 'supertest';
+import request from 'supertest';
 import '../../../src/bootstrap';
 import app from '../../../src/app';
 import truncate from '../../util/truncate';
 import factory from '../../factories';
 
-let server;
-let request;
-
 describe('Recipient', () => {
   beforeEach(async () => {
+    jest.setTimeout(30000);
     await truncate();
-    server = await app.listen(process.env.SUPERTEST_PORT);
-    request = supertest.agent(server);
-  });
-
-  afterEach(async () => {
-    await server.close();
   });
 
   it('should be able store a recipient', async () => {
@@ -25,7 +17,7 @@ describe('Recipient', () => {
 
     const token = user.generateToken();
 
-    const { status, body } = await request
+    const { status, body } = await request(app)
       .post('/recipients')
       .send(recipient)
       .set('Authorization', `Bearer ${token}`);
@@ -42,7 +34,7 @@ describe('Recipient', () => {
 
     const token = user.generateToken();
 
-    const { status } = await request
+    const { status } = await request(app)
       .post('/recipients')
       .set('Authorization', `Bearer ${token}`);
 
@@ -60,7 +52,7 @@ describe('Recipient', () => {
 
     const token = user.generateToken();
 
-    const { status } = await request
+    const { status } = await request(app)
       .put(`/recipients/${id}`)
       .set('Authorization', `Bearer ${token}`)
       .send(recipient);
@@ -75,7 +67,7 @@ describe('Recipient', () => {
 
     const token = user.generateToken();
 
-    const { status } = await request
+    const { status } = await request(app)
       .put(`/recipients/${id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({ state: '1' });
@@ -98,7 +90,7 @@ describe('Recipient', () => {
     const recipientId = 'abc';
     const token = user.generateToken();
 
-    const { status } = await request
+    const { status } = await request(app)
       .put(`/recipients/${recipientId}`)
       .send({ zip_code })
       .set('Authorization', `Bearer ${token}`);

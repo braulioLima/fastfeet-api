@@ -1,40 +1,33 @@
 import '../../../src/bootstrap';
-import supertest from 'supertest';
+import request from 'supertest';
 import app from '../../../src/app';
 
 import truncate from '../../util/truncate';
 import factory from '../../factories';
 
-let server;
-let request;
-
 describe('Authenticate', () => {
   beforeEach(async () => {
+    jest.setTimeout(30000);
     await truncate();
-    server = await app.listen(process.env.SUPERTEST_PORT);
-    request = supertest.agent(server);
-  });
-
-  afterEach(async () => {
-    await server.close();
   });
 
   it('should be able authenticate with valid credentials', async () => {
-    await factory.create('user', {
+    const { email, password } = await factory.create('user', {
       email: 'admin@fastfeet.com',
       password: '123456',
     });
 
-    const { status } = await request.post('/sessions').send({
-      email: 'admin@fastfeet.com',
-      password: '123456',
-    });
+    const user = { email, password };
+
+    const { status } = await request(app)
+      .post('/sessions')
+      .send(user);
 
     expect(status).toBe(201);
   });
 
   it('should not be able authenticate with invalid credentials', async () => {
-    const { status } = await request.post('/sessions');
+    const { status } = await request(app).post('/sessions');
 
     expect(status).toBe(400);
   });
@@ -44,7 +37,9 @@ describe('Authenticate', () => {
 
     const user = await factory.attrs('login');
 
-    const { status } = await request.post('/sessions').send(user);
+    const { status } = await request(app)
+      .post('/sessions')
+      .send(user);
 
     expect(status).toBe(401);
   });
@@ -56,7 +51,9 @@ describe('Authenticate', () => {
       email: 'test@test.com',
     });
 
-    const { status } = await request.post('/sessions').send(credentials);
+    const { status } = await request(app)
+      .post('/sessions')
+      .send(credentials);
 
     expect(status).toBe(401);
   });
@@ -72,7 +69,9 @@ describe('Authenticate', () => {
       password: '123456',
     });
 
-    const { body } = await request.post('/sessions').send(credentials);
+    const { body } = await request(app)
+      .post('/sessions')
+      .send(credentials);
 
     expect(body).toHaveProperty('token');
   });
