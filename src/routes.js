@@ -29,6 +29,7 @@ routes.put(
   RecipientController.update
 );
 
+routes.get('/deliveryman', DeliverymanController.index);
 routes.post(
   '/deliveryman',
   validatorDeliverymanStore,

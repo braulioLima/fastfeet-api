@@ -85,4 +85,16 @@ describe('Deliveryman', () => {
     expect(status).toBe(400);
     expect(body.error).toBe('File does not exist');
   });
+
+  it('should be able list deliverymans if authenticated', async () => {
+    const user = await factory.create('user');
+
+    const token = await user.generateToken();
+
+    const { status } = await request(app)
+      .get('/deliveryman')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(200);
+  });
 });
