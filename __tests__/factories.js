@@ -2,6 +2,7 @@ import { factory } from 'factory-girl';
 import faker from 'faker';
 
 import Deliveryman from '../src/app/models/Deliveryman';
+
 import User from '../src/app/models/User';
 import Recipient from '../src/app/models/Recipient';
 
