@@ -9,3 +9,6 @@ tmp/*
 !tmp/.gitkeep
 
 dist
+
+README-desafio-03.md
+.github
