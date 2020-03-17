@@ -2,12 +2,16 @@ import * as Yup from 'yup';
 
 export default async (req, res, next) => {
   const schema = Yup.object().shape({
-    email: Yup.string()
-      .email()
-      .required(),
-    password: Yup.string()
-      .min(6)
-      .required(),
+    name: Yup.string(),
+    street: Yup.string(),
+    number: Yup.number()
+      .positive()
+      .min(1)
+      .when('street', (street, field) => (street ? field.required() : field)),
+    complement: Yup.string(),
+    city: Yup.string(),
+    state: Yup.string().matches(/^[a-zA-Z]{2}$/i),
+    zip_code: Yup.string(),
   });
 
   try {
